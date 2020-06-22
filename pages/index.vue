@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     async getMd () {
-      const res = await axios.get('http://localhost:3006/api/md?name=home')
+      const res = await axios.get('/api/md?name=home')
       if (res && res.data && res.data.data) {
         this.content = marked(res.data.data)
       } else {

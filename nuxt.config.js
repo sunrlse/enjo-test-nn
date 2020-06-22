@@ -4,6 +4,11 @@ module.exports = {
   ** Nuxt rendering mode
   ** See https://nuxtjs.org/api/configuration-mode
   */
+  telemetry: false,
+  server: {
+    port: 3006, // default: 3000
+    host: '0.0.0.0', // default: localhost
+  },
   mode: 'universal',
   /*
   ** Headers of the page
