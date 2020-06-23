@@ -12,6 +12,9 @@ router.prefix('/api');
 // router.get('/getCategory', perf.getCategory);
 
 router.get('/md', markdown.getMd)
+router.post('/md', markdown.addMd)
+router.post('/md/update', markdown.updateMd)
+router.post('/md/del', markdown.deleteMd)
 
 router.post('/doc/upload', upload.handleUpload)
 

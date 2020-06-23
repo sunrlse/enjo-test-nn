@@ -2,28 +2,21 @@
   <div class="container">
     <aside>
       <h1 class="title">
-        idoc
+        this.doc
       </h1>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--grey"
-        >
-          GitHub
-        </a>
+      <div class="menu-wrap">
+        <div>
+          <span @click="showDoc('a1')">菜单一</span>
+        </div>
+        <div>
+          <span @click="showDoc('one')">菜单二</span>
+        </div>
       </div>
     </aside>
-    <div class="vditor-reset" v-html="content"></div>
+    <div class="main">
+      <div class="loading" v-if="loading">loading...</div>
+      <div class="vditor-reset" v-html="content"></div>
+    </div>
   </div>
 </template>
 
@@ -34,26 +27,38 @@ import marked from 'marked'
 export default {
   data () {
     return {
-      content: ''
+      aid: 'a1',
+      content: '',
+      loading: true
     }
   },
   mounted () {
-    this.getMd()
+    this.getMd(this.aid)
   },
   methods: {
-    async getMd () {
-      const res = await axios.get('/api/md?name=home')
+    async getMd (aid) {
+      this.loading = true
+      const res = await axios.get(`/api/md?aid=${aid}`)
       if (res && res.data && res.data.data) {
-        this.content = marked(res.data.data)
+        this.content = marked(res.data.data.content)
       } else {
         this.content = ''
       }
+      this.loading = false
+    },
+    showDoc (aid) {
+      this.getMd(aid)
     }
   }
 }
 </script>
 
 <style lang="less">
+.main {
+  position: absolute;
+  top: 0;
+  left: 245px;
+}
 aside {
   position: fixed;
   top: 0;
@@ -70,9 +75,6 @@ aside {
 //   align-items: center;
 //   text-align: center;
 // }
-.vditor-reset {
-  padding-left: 240px;
-}
 
 .title {
   font-family:
@@ -87,17 +89,10 @@ aside {
     sans-serif;
   display: block;
   font-weight: 300;
-  font-size: 100px;
+  font-size: 50px;
   color: #35495e;
   letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
+  text-align: center;
 }
 
 .links {

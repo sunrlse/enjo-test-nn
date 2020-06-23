@@ -5,11 +5,14 @@ const { Nuxt, Builder } = require('nuxt')
 const router = require('koa-router')()
 const bodyParser = require('koa-bodyparser')
 // const Monk = require('monk')
+const db = require('../connections/db')
 const cors = require('koa-cors');
 const convert = require('koa-convert')
 
 const api = require('./routes/api');
 const app = new Koa()
+
+app.context.db = db
 
 // 进行requestbody解析
 app.use(bodyParser())
@@ -17,15 +20,16 @@ app.use(bodyParser())
 app.use(router.routes())
 // 处理跨域
 app.use(convert(cors()))
+
 // 路由处理，在api中
 app.use(api.routes(), api.allowedMethods())
 
 
 // const host = process.env.HOST || '**.**.**.134'
 const port = process.env.PORT || 3006
-console.log('--------------------')
-console.log(process.env)
-console.log('--------------------')
+// console.log('--------------------')
+// console.log(process.env)
+// console.log('--------------------')
 // Import and Set Nuxt.js options
 let config = require('../nuxt.config.js')
 config.dev = !(process.env.NODE_ENV === 'production')
